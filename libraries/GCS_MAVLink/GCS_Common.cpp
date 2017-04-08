@@ -242,11 +242,14 @@ void GCS_MAVLINK::send_battery_status(const AP_BattMonitor &battery, const uint8
                                                         battery.get_cell_voltages(instance)[3],
                                                         battery.get_cell_voltages(instance)[4],
                                                         battery.get_cell_voltages(instance)[5]);
+    float temp;
+    bool got_temperature = battery.get_temperature(temp, instance);
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "Temp: %f", temp);
     mavlink_msg_battery_status_send(chan,
                                     instance, // id
                                     MAV_BATTERY_FUNCTION_UNKNOWN, // function
                                     MAV_BATTERY_TYPE_UNKNOWN, // type
-                                    0x7fff, // temperature. INT16_MAX if unknown
+                                    got_temperature? (temp * 100) :0x7fff, // temperature. INT16_MAX if unknown
                                     battery.get_cell_voltages(instance), // cell voltages
                                     battery.has_current(instance) ? battery.current_amps(instance) * 100 : -1, // current
                                     battery.has_current(instance) ? battery.current_total_mah(instance) : -1, // total current
