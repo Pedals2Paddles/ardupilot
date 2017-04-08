@@ -56,7 +56,9 @@ public:
         float       current_total_mah;  // total current draw since start-up
         uint32_t    last_time_micros;   // time when voltage and current was last read
         uint32_t    low_voltage_start_ms;  // time when voltage dropped below the minimum
-        cell_voltages_t cells;           // battery cell voltages in millivolts, 10 cells matches the MAVLink spec
+        cell_voltages_t cells;          // battery cell voltages in millivolts, 10 cells matches the MAVLink spec
+        float       temperature;        // battery temperature in celsius
+        bool        has_temperature;    // temperature is present
     };
 
     // Return the number of battery monitor instances
@@ -122,6 +124,10 @@ public:
     // cell voltages
     const cell_voltages_t & get_cell_voltages() const;
     const cell_voltages_t & get_cell_voltages(const uint8_t instance) const;
+
+    // temperature
+    bool get_temperature(float &temperature) const { return get_temperature(temperature, AP_BATT_PRIMARY_INSTANCE); };
+    bool get_temperature(float &temperature, const uint8_t instance) const;
 
     static const struct AP_Param::GroupInfo var_info[];
 
