@@ -44,6 +44,10 @@ public:
         BattMonitor_TYPE_MAXELL                     = 7
     };
 
+    struct cells {
+        uint16_t cells[10];
+    };
+
     // The BattMonitor_State structure is filled in by the backend driver
     struct BattMonitor_State {
         uint8_t     instance;           // the instance number of this monitor
@@ -54,6 +58,7 @@ public:
         float       current_total_mah;  // total current draw since start-up
         uint32_t    last_time_micros;   // time when voltage and current was last read
         uint32_t    low_voltage_start_ms;  // time when voltage dropped below the minimum
+        cells       cell_voltages;      // battery cell voltages in millivolts, 10 cells matches the MAVLink spec
     };
 
     // Return the number of battery monitor instances
@@ -115,6 +120,10 @@ public:
     /// true when (voltage * current) > watt_max
     bool overpower_detected() const;
     bool overpower_detected(uint8_t instance) const;
+
+    // cell voltages
+    const cells & get_cell_voltages() { return get_cell_voltages(AP_BATT_PRIMARY_INSTANCE); };
+    const cells & get_cell_voltages(const uint8_t instance) const;
 
     static const struct AP_Param::GroupInfo var_info[];
 
