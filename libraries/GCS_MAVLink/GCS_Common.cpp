@@ -235,14 +235,12 @@ void GCS_MAVLINK::send_power_status(void)
 
 void GCS_MAVLINK::send_battery_status(const AP_BattMonitor &battery, const uint8_t instance) const
 {
-    uint16_t voltages[10];
-    memset(&voltages, 0xff, sizeof(voltages)); // fill with UINT16_MAX for unknown cells
     mavlink_msg_battery_status_send(chan,
                                     instance, // id
                                     MAV_BATTERY_FUNCTION_UNKNOWN, // function
                                     MAV_BATTERY_TYPE_UNKNOWN, // type
                                     0x7fff, // temperature. INT16_MAX if unknown
-                                    voltages,
+                                    battery.get_cell_voltages(instance), // cell voltages
                                     battery.has_current(instance) ? battery.current_amps(instance) * 100 : -1, // current
                                     battery.has_current(instance) ? battery.current_total_mah(instance) : -1, // total current
                                     -1, // joules used
