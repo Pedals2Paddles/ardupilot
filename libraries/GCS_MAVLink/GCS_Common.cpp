@@ -235,6 +235,13 @@ void GCS_MAVLINK::send_power_status(void)
 
 void GCS_MAVLINK::send_battery_status(const AP_BattMonitor &battery, const uint8_t instance) const
 {
+    GCS_MAVLINK::send_statustext_all(MAV_SEVERITY_INFO, "1: %d 2: %d 3: %d 4: %d 5: %d 6: %d",
+                                                        battery.get_cell_voltages(instance)[0],
+                                                        battery.get_cell_voltages(instance)[1],
+                                                        battery.get_cell_voltages(instance)[2],
+                                                        battery.get_cell_voltages(instance)[3],
+                                                        battery.get_cell_voltages(instance)[4],
+                                                        battery.get_cell_voltages(instance)[5]);
     mavlink_msg_battery_status_send(chan,
                                     instance, // id
                                     MAV_BATTERY_FUNCTION_UNKNOWN, // function
