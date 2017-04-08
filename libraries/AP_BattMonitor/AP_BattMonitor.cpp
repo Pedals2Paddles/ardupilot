@@ -164,6 +164,8 @@ AP_BattMonitor::init()
     for (uint8_t instance=0; instance<AP_BATT_MONITOR_MAX_INSTANCES; instance++) {
         // clear out the cell voltages
         memset(&state[instance].cell_voltages, 0xFF, sizeof(cells));
+        // clear out the temperature
+        state[instance].has_temperature = false;
 
         uint8_t monitor_type = _monitoring[instance];
         switch (monitor_type) {
@@ -344,5 +346,16 @@ const AP_BattMonitor::cells & AP_BattMonitor::get_cell_voltages(const uint8_t in
         return state[AP_BATT_PRIMARY_INSTANCE].cell_voltages;
     } else {
         return state[instance].cell_voltages;
+    }
+}
+
+// returns true if there is a temperature reading
+bool AP_BattMonitor::get_temperature(float &temperature, const uint8_t instance) const
+{
+    if (instance >= AP_BATT_MONITOR_MAX_INSTANCES) {
+        return false;
+    } else {
+        temperature = state[instance].temperature;
+        return state[instance].has_temperature;
     }
 }
