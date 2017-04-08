@@ -1799,24 +1799,32 @@ void DataFlash_Class::Log_Write_AttitudeView(AP_AHRS_View &ahrs, const Vector3f 
 void DataFlash_Class::Log_Write_Current(const AP_BattMonitor &battery)
 {
     if (battery.num_instances() >= 1) {
+        float temp;
+        bool has_temp = battery.get_temperature(temp, 0);
         struct log_Current pkt = {
             LOG_PACKET_HEADER_INIT(LOG_CURRENT_MSG),
             time_us             : AP_HAL::micros64(),
             battery_voltage     : battery.voltage(0),
             current_amps        : battery.current_amps(0),
             current_total       : battery.current_total_mah(0),
+            temperature         : (int16_t)((has_temp ? temp : 0) * 100),
         };
+        memcpy(pkt.cell_voltages, battery.get_cell_voltages(0), sizeof(sizeof(((log_Current *)0)->cell_voltages)));
         WriteBlock(&pkt, sizeof(pkt));
     }
 
     if (battery.num_instances() >= 2) {
+        float temp;
+        bool has_temp = battery.get_temperature(temp, 0);
         struct log_Current pkt = {
             LOG_PACKET_HEADER_INIT(LOG_CURRENT2_MSG),
             time_us             : AP_HAL::micros64(),
             battery_voltage     : battery.voltage(1),
             current_amps        : battery.current_amps(1),
             current_total       : battery.current_total_mah(1),
+            temperature         : (int16_t)((has_temp ? temp : 0) * 100),
         };
+        memcpy(pkt.cell_voltages, battery.get_cell_voltages(1), sizeof(sizeof(((log_Current *)0)->cell_voltages)));
         WriteBlock(&pkt, sizeof(pkt));
     }
 }
