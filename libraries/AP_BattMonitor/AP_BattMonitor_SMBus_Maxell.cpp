@@ -99,10 +99,8 @@ void AP_BattMonitor_SMBus_Maxell::timer()
 
     // read temperature
     if (read_word(BATTMONITOR_SMBUS_MAXELL_TEMP, data)) {
-        _state.has_temperature = true;
+        _state.temperature_time = AP_HAL::millis();
         _state.temperature = ((float)(data - 2731) * 0.1f);
-    } else {
-        _state.has_temperature = false;
     }
 }
 
