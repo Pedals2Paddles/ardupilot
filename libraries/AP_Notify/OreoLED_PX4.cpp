@@ -128,9 +128,9 @@ void OreoLED_PX4::update()
         step = 0;
     }
 
-    // Pre-initialization pattern is all solid green
+    // Pre-initialization pattern is all solid blue for Matt's testing
     if (!initialization_done) {
-        set_rgb(OREOLED_ALL_INSTANCES, 0, OREOLED_BRIGHT, 0);
+        set_rgb(OREOLED_ALL_INSTANCES, 0, 0, OREOLED_BRIGHT);
     }
 
     // initialising pattern
