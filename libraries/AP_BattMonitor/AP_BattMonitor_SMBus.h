@@ -29,6 +29,15 @@ public:
 
 protected:
 
+<<<<<<< HEAD
+=======
+    void read(void);
+
+    // reads the pack full charge capacity
+    // returns true if the read was successful, or if we already knew the pack capacity
+    bool read_full_charge_capacity(void);
+
+>>>>>>> 5ba5908dd... AP_BattMonitor: SMBus: Fetch pack capacity
     // reads the temperature word from the battery
     // returns true if the read was successful
     bool read_temp(void);
@@ -44,6 +53,12 @@ protected:
     AP_HAL::OwnPtr<AP_HAL::I2CDevice> _dev;
     bool _pec_supported; // true if PEC is supported
 
+<<<<<<< HEAD
+=======
+    uint16_t _serial_number;        // battery serial number
+    uint16_t _full_charge_capacity; // full charge capacity, used to stash the value before setting the parameter
+
+>>>>>>> 5ba5908dd... AP_BattMonitor: SMBus: Fetch pack capacity
 };
 
 // include specific implementations

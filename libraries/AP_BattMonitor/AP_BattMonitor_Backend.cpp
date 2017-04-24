@@ -40,12 +40,15 @@ uint8_t AP_BattMonitor_Backend::capacity_remaining_pct() const
     }
 }
 
+<<<<<<< HEAD
 /// set capacity for this instance
 void AP_BattMonitor_Backend::set_capacity(uint32_t capacity)
 {
     _mon._pack_capacity[_instance] = capacity;
 }
 
+=======
+>>>>>>> 5ba5908dd... AP_BattMonitor: SMBus: Fetch pack capacity
 /// get capacity for this instance
 int32_t AP_BattMonitor_Backend::get_capacity() const
 {
