@@ -119,7 +119,7 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
     // @Description: 0 for none, any other for the RC channel to be used to control tilt (pitch) movements
     // @Values: 0:Disabled,5:RC5,6:RC6,7:RC7,8:RC8,9:RC9,10:RC10,11:RC11,12:RC12
     // @User: Standard
-    AP_GROUPINFO("_RC_IN_TILT",  10, AP_Mount, state[0]._tilt_rc_in,    0),
+    AP_GROUPINFO("_RC_IN_TILT",  10, AP_Mount, state[0]._tilt_rc_in,    6),
 
     // @Param: _ANGMIN_TIL
     // @DisplayName: Minimum tilt angle
@@ -128,7 +128,7 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
     // @Range: -18000 17999
     // @Increment: 1
     // @User: Standard
-    AP_GROUPINFO("_ANGMIN_TIL", 11, AP_Mount, state[0]._tilt_angle_min, -4500),
+    AP_GROUPINFO("_ANGMIN_TIL", 11, AP_Mount, state[0]._tilt_angle_min, -9000),
 
     // @Param: _ANGMAX_TIL
     // @DisplayName: Maximum tilt angle
@@ -137,7 +137,7 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
     // @Range: -18000 17999
     // @Increment: 1
     // @User: Standard
-    AP_GROUPINFO("_ANGMAX_TIL", 12, AP_Mount, state[0]._tilt_angle_max, 4500),
+    AP_GROUPINFO("_ANGMAX_TIL", 12, AP_Mount, state[0]._tilt_angle_max, 0),
 
     // @Param: _RC_IN_PAN
     // @DisplayName: pan (yaw) RC input channel
@@ -196,7 +196,7 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
     // @Values: 0:None, 1:Servo, 2:3DR Solo, 3:Alexmos Serial, 4:SToRM32 MAVLink, 5:SToRM32 Serial
     // @RebootRequired: True
     // @User: Standard
-    AP_GROUPINFO("_TYPE", 19, AP_Mount, state[0]._type, 0),
+    AP_GROUPINFO("_TYPE", 19, AP_Mount, state[0]._type, 2),
 
     // 20 formerly _OFF_JNT
 

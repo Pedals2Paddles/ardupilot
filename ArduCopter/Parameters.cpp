@@ -74,7 +74,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Units: Hz
     // @Range: 0 10
     // @Increment: .5
-    GSCALAR(throttle_filt,  "PILOT_THR_FILT",     0),
+    GSCALAR(throttle_filt,  "PILOT_THR_FILT",     2),
 
     // @Param: PILOT_TKOFF_ALT
     // @DisplayName: Pilot takeoff altitude
@@ -147,7 +147,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 2000
     // @Increment: 50
     // @User: Standard
-    GSCALAR(rtl_speed_cms,   "RTL_SPEED",     0),
+    GSCALAR(rtl_speed_cms,   "RTL_SPEED",     900),
 
     // @Param: RNGFND_GAIN
     // @DisplayName: Rangefinder gain
@@ -162,7 +162,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Description: Controls whether failsafe will be invoked when battery voltage or current runs low
     // @Values: 0:Disabled,1:Land,2:RTL
     // @User: Standard
-    GSCALAR(failsafe_battery_enabled, "FS_BATT_ENABLE", FS_BATT_DISABLED),
+    GSCALAR(failsafe_battery_enabled, "FS_BATT_ENABLE", FS_BATT_RTL),
 
     // @Param: FS_BATT_VOLTAGE
     // @DisplayName: Failsafe battery voltage
@@ -258,7 +258,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Range: 0 500
     // @Increment: 10
     // @User: Standard
-    GSCALAR(land_speed_high,        "LAND_SPEED_HIGH",   0),
+    GSCALAR(land_speed_high,        "LAND_SPEED_HIGH",   220),
     
     // @Param: PILOT_VELZ_MAX
     // @DisplayName: Pilot maximum vertical speed
@@ -357,7 +357,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Values: 830:Default,894:Default+RCIN,958:Default+IMU,1854:Default+Motors,-6146:NearlyAll-AC315,45054:NearlyAll,131071:All+FastATT,262142:All+MotBatt,393214:All+FastIMU,397310:All+FastIMU+PID,655358:All+FullIMU,0:Disabled
     // @Bitmask: 0:ATTITUDE_FAST,1:ATTITUDE_MED,2:GPS,3:PM,4:CTUN,5:NTUN,6:RCIN,7:IMU,8:CMD,9:CURRENT,10:RCOUT,11:OPTFLOW,12:PID,13:COMPASS,14:INAV,15:CAMERA,17:MOTBATT,18:IMU_FAST,19:IMU_RAW
     // @User: Standard
-    GSCALAR(log_bitmask,    "LOG_BITMASK",          DEFAULT_LOG_BITMASK),
+    GSCALAR(log_bitmask,    "LOG_BITMASK",          131070),
 
     // @Param: ESC_CALIBRATION
     // @DisplayName: ESC Calibration
@@ -926,7 +926,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Description: Ground Effect Compensation Enable/Disable
     // @Values: 0:Disabled,1:Enabled
     // @User: Advanced
-    AP_GROUPINFO("GND_EFFECT_COMP", 5, ParametersG2, gndeffect_comp_enabled, 0),
+    AP_GROUPINFO("GND_EFFECT_COMP", 5, ParametersG2, gndeffect_comp_enabled, 1),
 
 #if ADVANCED_FAILSAFE == ENABLED
     // @Group: AFS_
@@ -988,7 +988,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Description: Controls major frame class for multicopter component
     // @Values: 0:Undefined, 1:Quad, 2:Hexa, 3:Octa, 4:OctaQuad, 5:Y6, 6:Heli, 7:Tri, 8:SingleCopter, 9:CoaxCopter
     // @User: Standard
-    AP_GROUPINFO("FRAME_CLASS", 15, ParametersG2, frame_class, 0),
+    AP_GROUPINFO("FRAME_CLASS", 15, ParametersG2, frame_class, 1),
 
     // @Group: SERVO
     // @Path: ../libraries/SRV_Channel/SRV_Channels.cpp

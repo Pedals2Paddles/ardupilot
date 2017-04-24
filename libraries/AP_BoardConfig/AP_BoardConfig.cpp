@@ -35,7 +35,7 @@
 #endif
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4
-# define BOARD_SAFETY_ENABLE_DEFAULT 1
+# define BOARD_SAFETY_ENABLE_DEFAULT 0
 #if defined(CONFIG_ARCH_BOARD_PX4FMU_V1)
 #define BOARD_PWM_COUNT_DEFAULT 2
 #define BOARD_SER1_RTSCTS_DEFAULT 0 // no flow control on UART5 on FMUv1
@@ -49,9 +49,9 @@
 # define BOARD_SAFETY_ENABLE_DEFAULT 0
 #else // V2
 #define BOARD_PWM_COUNT_DEFAULT 4
-#define BOARD_SER1_RTSCTS_DEFAULT 2
+#define BOARD_SER1_RTSCTS_DEFAULT 1
 #endif
-#define BOARD_TYPE_DEFAULT PX4_BOARD_AUTO
+#define BOARD_TYPE_DEFAULT PX4_BOARD_PIXHAWK2
 #elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
 # define BOARD_SAFETY_ENABLE_DEFAULT 0
 # define BOARD_PWM_COUNT_DEFAULT 8
@@ -81,7 +81,7 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
     // @Values: 0:No PWMs,2:Two PWMs,4:Four PWMs,6:Six PWMs,7:Three PWMs and One Capture
     // @RebootRequired: True
     // @User: Advanced
-    AP_GROUPINFO("PWM_COUNT",    0, AP_BoardConfig, px4.pwm_count, BOARD_PWM_COUNT_DEFAULT),
+    AP_GROUPINFO("PWM_COUNT",    0, AP_BoardConfig, px4.pwm_count, 4),
 #endif
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4
@@ -91,7 +91,7 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
     // @Values: 0:Disabled,1:Enabled,2:Auto
     // @RebootRequired: True
     // @User: Advanced
-    AP_GROUPINFO("SER1_RTSCTS",    1, AP_BoardConfig, px4.ser1_rtscts, BOARD_SER1_RTSCTS_DEFAULT),
+    AP_GROUPINFO("SER1_RTSCTS",    1, AP_BoardConfig, px4.ser1_rtscts, 1),
 
     // @Param: SER2_RTSCTS
     // @DisplayName: Serial 2 flow control
@@ -109,7 +109,7 @@ const AP_Param::GroupInfo AP_BoardConfig::var_info[] = {
     // @Values: 0:Disabled,1:Enabled
     // @RebootRequired: True
     // @User: Standard
-    AP_GROUPINFO("SAFETYENABLE",   3, AP_BoardConfig, px4.safety_enable, BOARD_SAFETY_ENABLE_DEFAULT),
+    AP_GROUPINFO("SAFETYENABLE",   3, AP_BoardConfig, px4.safety_enable, 0),
 #endif
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4

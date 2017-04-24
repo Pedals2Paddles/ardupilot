@@ -15,7 +15,7 @@ const AP_Param::GroupInfo DataFlash_Class::var_info[] = {
     // @Description: 0 for None, 1 for File, 2 for dataflash mavlink, 3 for both file and dataflash
     // @Values: 0:None,1:File,2:MAVLink,3:BothFileAndMAVLink
     // @User: Standard
-    AP_GROUPINFO("_BACKEND_TYPE",  0, DataFlash_Class, _params.backend_types,       DATAFLASH_BACKEND_FILE),
+    AP_GROUPINFO("_BACKEND_TYPE",  0, DataFlash_Class, _params.backend_types,       DATAFLASH_BACKEND_BOTH),
 
     // @Param: _FILE_BUFSIZE
     // @DisplayName: Maximum DataFlash File Backend buffer size (in kilobytes)
@@ -28,7 +28,7 @@ const AP_Param::GroupInfo DataFlash_Class::var_info[] = {
     // @Description: If LOG_DISARMED is set to 1 then logging will be enabled while disarmed. This can make for very large logfiles but can help a lot when tracking down startup issues
     // @Values: 0:Disabled,1:Enabled
     // @User: Standard
-    AP_GROUPINFO("_DISARMED",  2, DataFlash_Class, _params.log_disarmed,       0),
+    AP_GROUPINFO("_DISARMED",  2, DataFlash_Class, _params.log_disarmed,       1),
 
     // @Param: _REPLAY
     // @DisplayName: Enable logging of information needed for Replay
@@ -42,7 +42,7 @@ const AP_Param::GroupInfo DataFlash_Class::var_info[] = {
     // @Description: When set, the current log file is closed when the vehicle is disarmed.  If LOG_DISARMED is set then a fresh log will be opened.
     // @Values: 0:Disabled,1:Enabled
     // @User: Standard
-    AP_GROUPINFO("_FILE_DSRMROT",  4, DataFlash_Class, _params.file_disarm_rot,       0),
+    AP_GROUPINFO("_FILE_DSRMROT",  4, DataFlash_Class, _params.file_disarm_rot,       1),
 
     AP_GROUPEND
 };

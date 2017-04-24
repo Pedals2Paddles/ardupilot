@@ -12,7 +12,7 @@ const AP_Param::GroupInfo AP_BattMonitor::var_info[] = {
     // @Description: Controls enabling monitoring of the battery's voltage and current
     // @Values: 0:Disabled,3:Analog Voltage Only,4:Analog Voltage and Current,5:Solo,6:Bebop,7:SMBus-Maxell
     // @User: Standard
-    AP_GROUPINFO("_MONITOR", 0, AP_BattMonitor, _monitoring[0], BattMonitor_TYPE_NONE),
+    AP_GROUPINFO("_MONITOR", 0, AP_BattMonitor, _monitoring[0], BattMonitor_TYPE_SOLO),
 
     // @Param: _VOLT_PIN
     // @DisplayName: Battery Voltage sensing pin

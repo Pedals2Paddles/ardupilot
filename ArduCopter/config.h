@@ -136,11 +136,11 @@
 // Battery monitoring
 //
 #ifndef FS_BATT_VOLTAGE_DEFAULT
- # define FS_BATT_VOLTAGE_DEFAULT       10.5f       // default battery voltage below which failsafe will be triggered
+ # define FS_BATT_VOLTAGE_DEFAULT       14f       // default battery voltage below which failsafe will be triggered
 #endif
 
 #ifndef FS_BATT_MAH_DEFAULT
- # define FS_BATT_MAH_DEFAULT             0         // default battery capacity (in mah) below which failsafe will be triggered
+ # define FS_BATT_MAH_DEFAULT           520         // default battery capacity (in mah) below which failsafe will be triggered
 #endif
 
 #ifndef BOARD_VOLTAGE_MIN
@@ -191,7 +191,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //  EKF Failsafe
 #ifndef FS_EKF_ACTION_DEFAULT
- # define FS_EKF_ACTION_DEFAULT         FS_EKF_ACTION_LAND  // EKF failsafe triggers land by default
+ # define FS_EKF_ACTION_DEFAULT         FS_EKF_ACTION_ALTHOLD  // EKF failsafe triggers land by default
 #endif
 #ifndef FS_EKF_THRESHOLD_DEFAULT
  # define FS_EKF_THRESHOLD_DEFAULT      0.8f    // EKF failsafe's default compass and velocity variance threshold above which the EKF failsafe will be triggered
@@ -276,22 +276,22 @@
 //
 
 #ifndef FLIGHT_MODE_1
- # define FLIGHT_MODE_1                  STABILIZE
+ # define FLIGHT_MODE_1                  LOITER
 #endif
 #ifndef FLIGHT_MODE_2
- # define FLIGHT_MODE_2                  STABILIZE
+ # define FLIGHT_MODE_2                  LOITER
 #endif
 #ifndef FLIGHT_MODE_3
- # define FLIGHT_MODE_3                  STABILIZE
+ # define FLIGHT_MODE_3                  LOITER
 #endif
 #ifndef FLIGHT_MODE_4
- # define FLIGHT_MODE_4                  STABILIZE
+ # define FLIGHT_MODE_4                  LOITER
 #endif
 #ifndef FLIGHT_MODE_5
- # define FLIGHT_MODE_5                  STABILIZE
+ # define FLIGHT_MODE_5                  LOITER
 #endif
 #ifndef FLIGHT_MODE_6
- # define FLIGHT_MODE_6                  STABILIZE
+ # define FLIGHT_MODE_6                  LOITER
 #endif
 
 
@@ -306,7 +306,7 @@
 // Takeoff
 //
 #ifndef PILOT_TKOFF_ALT_DEFAULT
- # define PILOT_TKOFF_ALT_DEFAULT           0     // default final alt above home for pilot initiated takeoff
+ # define PILOT_TKOFF_ALT_DEFAULT           214     // default final alt above home for pilot initiated takeoff
 #endif
 
 
@@ -314,7 +314,7 @@
 // Landing
 //
 #ifndef LAND_SPEED
- # define LAND_SPEED    50          // the descent speed for the final stage of landing in cm/s
+ # define LAND_SPEED    45          // the descent speed for the final stage of landing in cm/s
 #endif
 #ifndef LAND_START_ALT
  # define LAND_START_ALT 1000         // altitude in cm where land controller switches to slow rate of descent
@@ -406,7 +406,7 @@
 #endif
 
 #ifndef RTL_ALT
- # define RTL_ALT 				    1500    // default alt to return to home in cm, 0 = Maintain current altitude
+ # define RTL_ALT 				    4500    // default alt to return to home in cm, 0 = Maintain current altitude
 #endif
 
 #ifndef RTL_ALT_MIN
@@ -414,7 +414,7 @@
 #endif
 
 #ifndef RTL_CLIMB_MIN_DEFAULT
- # define RTL_CLIMB_MIN_DEFAULT     0       // vehicle will always climb this many cm as first stage of RTL
+ # define RTL_CLIMB_MIN_DEFAULT     1000    // vehicle will always climb this many cm as first stage of RTL
 #endif
 
 #ifndef RTL_ABS_MIN_CLIMB
@@ -435,11 +435,11 @@
 
 // AUTO Mode
 #ifndef WP_YAW_BEHAVIOR_DEFAULT
- # define WP_YAW_BEHAVIOR_DEFAULT   WP_YAW_BEHAVIOR_LOOK_AT_NEXT_WP_EXCEPT_RTL
+ # define WP_YAW_BEHAVIOR_DEFAULT   WP_YAW_BEHAVIOR_LOOK_AHEAD
 #endif
 
 #ifndef AUTO_YAW_SLEW_RATE
- # define AUTO_YAW_SLEW_RATE    60              // degrees/sec
+ # define AUTO_YAW_SLEW_RATE        30              // degrees/sec
 #endif
 
 #ifndef YAW_LOOK_AHEAD_MIN_SPEED
@@ -455,7 +455,7 @@
 // Stabilize Rate Control
 //
 #ifndef ROLL_PITCH_YAW_INPUT_MAX
- # define ROLL_PITCH_YAW_INPUT_MAX      4500        // roll, pitch and yaw input range
+ # define ROLL_PITCH_YAW_INPUT_MAX  4500        // roll, pitch and yaw input range
 #endif
 #ifndef DEFAULT_ANGLE_MAX
  # define DEFAULT_ANGLE_MAX         4500            // ANGLE_MAX parameters default value
