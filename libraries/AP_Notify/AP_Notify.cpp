@@ -110,15 +110,15 @@ void AP_Notify::init(bool enable_external_leds)
         _devices[0] = new PixRacerLED();
         _devices[1] = new ToshibaLED_I2C();
         _devices[2] = new ToneAlarm_PX4();
-        _devices[3] = new Display();
-        _devices[4] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = new Display();
         
     #else   // All other px4 boards use standard devices.
         _devices[0] = new AP_BoardLED();
         _devices[1] = new ToshibaLED_I2C();
         _devices[2] = new ToneAlarm_PX4();
-        _devices[3] = new Display();
-        _devices[4] = nullptr;
+        _devices[3] = nullptr
+        _devices[4] = new Display();
     #endif
 
     
@@ -166,7 +166,7 @@ void AP_Notify::init(bool enable_external_leds)
         
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BLUE
         _devices[0] = new AP_BoardLED();
-        _devices[1] = new ToshibaLED_I2C();
+        _devices[1] = nullptr;
         _devices[2] = new Display();
         _devices[3] = nullptr;
         _devices[4] = nullptr;
@@ -194,7 +194,7 @@ void AP_Notify::init(bool enable_external_leds)
         _devices[4] = nullptr;
         
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
-        _devices[0] = new NavioLED_I2C();
+        _devices[0] = new AP_BoardLED();
         _devices[1] = new RCOutputRGBLed(HAL_RCOUT_RGBLED_RED, HAL_RCOUT_RGBLED_GREEN, HAL_RCOUT_RGBLED_BLUE);
         _devices[2] = nullptr;
         _devices[3] = nullptr;
@@ -210,8 +210,8 @@ void AP_Notify::init(bool enable_external_leds)
     #else
         _devices[0] = new AP_BoardLED();
         _devices[1] = new ToshibaLED_I2C();
-        _devices[2] = new ToneAlarm_PX4();
-        _devices[3] = new Display();
+        _devices[2] = new ToneAlarm_Linux();
+        _devices[3] = nullptr;
         _devices[4] = nullptr;
     #endif
 
