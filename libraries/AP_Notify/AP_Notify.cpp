@@ -158,10 +158,10 @@ void AP_Notify::init(bool enable_external_leds)
 
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BBBMINI
         _devices[0] = new AP_BoardLED();
-        _devices[1] = new Buzzer();
-        _devices[2] = new Display();
+        _devices[1] = nullptr;
+        _devices[2] = new Buzzer()nullptr;
         _devices[3] = nullptr;
-        _devices[4] = nullptr;
+        _devices[4] = new Display();
         
         
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BLUE
@@ -172,9 +172,9 @@ void AP_Notify::init(bool enable_external_leds)
         _devices[4] = nullptr;
         
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
-        _devices[0] = new ToshibaLED_I2C();
-        _devices[1] = new ToneAlarm_Linux();
-        _devices[2] = nullptr;
+        _devices[0] = nullptr;
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_Linux();
         _devices[3] = nullptr;
         _devices[4] = nullptr;
 
@@ -202,8 +202,8 @@ void AP_Notify::init(bool enable_external_leds)
 
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
         _devices[0] = new DiscoLED();
-        _devices[1] = new ToneAlarm_Linux();
-        _devices[2] = nullptr;
+        _devices[1] = nullptr;
+        _devices[2] = new ToneAlarm_Linux();
         _devices[3] = nullptr;
         _devices[4] = nullptr;
 
