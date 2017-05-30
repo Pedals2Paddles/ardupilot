@@ -41,32 +41,9 @@ class AP_Notify
     friend class Display;           // Display needs access to notify parameters
 public:
     // Constructor
-    AP_Notify();
+    AP_Notify();   
     
-    // Notify board types
-    enum ToneAlarm_Type {
-        Board_Type_NONE         = 0,
-        Board_Type_PX4          = 1,
-        Board_Type_PX4_V4       = 2,
-        Board_Type_Solo         = 3,
-        Board_Type_VRBrain      = 4,
-        Board_Type_VRBrain_45   = 5,
-        Board_Type_Linux_Default= 6,
-        Board_Type_Navio        = 7,
-        Board_Type_Navio2       = 8,
-        Board_Type_BBBMini      = 9,
-        Board_Type_Blue         = 10,
-        Board_Type_RASPilot     = 11,
-        Board_Type_MinLure      = 12,
-        Board_Type_ERLEBrain2   = 13,
-        Board_Type_PXFMini      = 14,
-        Board_Type_BH           = 15,
-        Board_Type_Disco        = 16,
-        Board_Type_EnumEnd      = 100
-    };
-    
-    
-        // Oreo LED Themes
+    // Oreo LED Themes
     enum Oreo_LED_Theme {
         OreoLED_Disabled        = 0,    // Disabled the OLED driver entirely
         OreoLED_Aircraft        = 1,    // Standard aviation themed lighting
@@ -163,7 +140,6 @@ private:
     AP_Int8 _rgb_led_override;
     AP_Int8 _buzzer_enable;
     AP_Int8 _display_type;
-    AP_Int8 _board_type;
     AP_Int8 _oled_theme;
     
 

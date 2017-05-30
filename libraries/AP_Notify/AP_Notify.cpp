@@ -65,19 +65,12 @@ const AP_Param::GroupInfo AP_Notify::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("DISPLAY_TYPE", 3, AP_Notify, _display_type, 0),
 
-    // @Param: BRD_TYPE
-    // @DisplayName: Board type for notify devices
-    // @Description: This sets up the notification devices based on board, Defaults to PX4
-    // @Values: 0:None,1:PX4,2:PX4_V4,3:Solo,4:VRBrain,5:VRBrain_45,6:Linux_Default,7:Navio,8:Navio3,9:BBBMini,10:Blue,11:RASPilot,12:MinLure,13:ERLEBrain2,14:PXFMini,15:BH,16:Disco
-    // @User: Advanced
-    AP_GROUPINFO("BRD_TYPE", 4, AP_Notify, _board_type, 1),
-    
     // @Param: OLED_THEME
     // @DisplayName: OreoLED Theme
     // @Description: Enable/Disable Oreo LED driver, and set the theme for aircraft or rover. Default is zero for off.
     // @Values: 0:Disabled,1:Aircraft, 2:Rover
     // @User: Advanced
-    AP_GROUPINFO("OLED_THEME", 5, AP_Notify, _oled_theme, 0),
+    AP_GROUPINFO("OLED_THEME", 4, AP_Notify, _oled_theme, 0),
 
     AP_GROUPEND
 };
@@ -97,143 +90,139 @@ NotifyDevice *AP_Notify::_devices[] = {nullptr, nullptr, nullptr, nullptr, nullp
 // initialisation
 void AP_Notify::init(bool enable_external_leds)
 {
-    // Select Board LED Type based on board
-    switch (_board_type) {
-        case Board_Type_PX4:
-        case Board_Type_Solo:
-        case Board_Type_VRBrain_45:
-        case Board_Type_Blue:
-        case Board_Type_ERLEBrain2:
-        case Board_Type_PXFMini:
-        case Board_Type_BH:
-        case Board_Type_BBBMini:
-            _devices[0] = new AP_BoardLED();
-            break;
-            
+    
+// Notify devices for PX4 boards
+#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
+    #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_PX4_V3 // Has enough memory for Oreo LEDs
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[4] = new Display();
         
-        case Board_Type_RASPilot:
-            _devices[0] = nullptr;
-            break;
+        // Oreo LED enable/disable by NTF_OLED_THEME parameter
+        if (_oled_theme) {
+            _devices[3] = new OreoLED_PX4(_oled_theme);
+        } else {
+            _devices[3] = nullptr;
+        }
+        
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_PX4_V4 // Has its own LED board
+        _devices[0] = new PixRacerLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[3] = new Display();
+        _devices[4] = nullptr;
+        
+    #else   // All other px4 boards use standard devices.
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[3] = new Display();
+        _devices[4] = nullptr;
+    #endif
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
-        case Board_Type_VRBrain:
-            _devices[0] = new VRBoard_LED();
-            break;
-#endif
-            
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_PX4_V4
-        case Board_Type_PX4_V4:
-            _devices[0] = new PixRacerLED();
-            break;
-
-#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO
-        case Board_Type_Navio:
-            _devices[0] = new NavioLED_I2C();
-            break;
-
-#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2
-        case Board_Type_Navio2:
-            _devices[0] = new DiscreteRGBLed(4, 27, 6, false);
-            break;
-
-#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
-        case Board_Type_Disco:
-            _devices[0] = new DiscoLED();
-            break;
-
-#elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_MINLURE
-        case Board_Type_MinLure:
-            _devices[0] = new RCOutputRGBLedOff(15, 13, 14, 255);
-            break;
-#endif
-            
-        default:
-            _devices[0] = new AP_BoardLED();
-            break;
-    }
     
-    // Select Toshiba Led based on board
-    switch (_board_type) {
-        case Board_Type_BBBMini:
-        case Board_Type_Blue:
-        case Board_Type_MinLure:
-        case Board_Type_ERLEBrain2:
-        case Board_Type_PXFMini:
-        case Board_Type_Disco:
-            _devices[1] = nullptr;
-            
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
-        case Board_Type_BH:
-            _devices[1] = new RCOutputRGBLed(HAL_RCOUT_RGBLED_RED, HAL_RCOUT_RGBLED_GREEN, HAL_RCOUT_RGBLED_BLUE);
-            break;
-#endif
-
-        default:
-           _devices[1] = new ToshibaLED_I2C();
-           break;
-    }
+// Notify devices for VRBRAIN boards
+#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN  
+    #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_VRBRAIN_V45 // Uses px4 LED board
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[3] = new ExternalLED()
+        _devices[4] = new nullptr;
+        
+    #else
+        _devices[0] = new VRBoard_LED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[3] = new ExternalLED()
+        _devices[4] = new Display();
+    #endif
     
-    // Select Display based on board
-    switch (_board_type) {
-        case Board_Type_PX4:
-        case Board_Type_PX4_V4:
-        case Board_Type_Solo:
-        case Board_Type_BBBMini:
-            _devices[4] = new Display();
-            break;
-        default:
-            _devices[4] = nullptr;
-            break;
-    }
 
-    // Select Tone Alarm Type based on board
-    switch (_board_type) {
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
-        case Board_Type_PX4:
-        case Board_Type_PX4_V4:
-        case Board_Type_VRBrain:
-        case Board_Type_VRBrain_45:
-        case Board_Type_Solo:
-            _devices[2] = new ToneAlarm_PX4();
-            break;
-#endif
-            
-        case Board_Type_BBBMini:
-            _devices[2] = new Buzzer();
-            break;
- 
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-        case Board_Type_RASPilot:
-        case Board_Type_Disco:
-            _devices[2] = new ToneAlarm_Linux();
-            break;
-#endif
-            
-        default:
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-            _devices[2] = new ToneAlarm_Linux();
-#else
-            _devices[2] = nullptr;
-#endif
-            break;
-    }
+// Notify devices for linux boards    
+#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
+    #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO
+        _devices[0] = new NavioLED_I2C();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
 
-    // Enable/Disable the OreoLED driver based on NTF_OREO_LED not being zero
-    // Only allowed to enable on a non-minimized PX4
-    // Only the Pixhawk 2 running px4v3 has enough memory
-#if CONFIG_HAL_BOARD == HAL_BOARD_PX4
-#if !HAL_MINIMIZE_FEATURES
-    if (_oled_theme) {
-        _devices[3] = new OreoLED_PX4(_oled_theme); // Enabled if non-zero
-    } else {
-        _devices[3] = nullptr;                      // Disabled if zero
-    }
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2
+        _devices[0] = new DiscreteRGBLed(4, 27, 6, false);
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BBBMINI
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new Buzzer();
+        _devices[2] = new Display();
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+        
+        
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BLUE
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new Display();
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+        
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RASPILOT
+        _devices[0] = new ToshibaLED_I2C();
+        _devices[1] = new ToneAlarm_Linux();
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_MINLURE
+        _devices[0] = new RCOutputRGBLedOff led(15, 13, 14, 255);
+        _devices[1] = nullptr;
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_ERLEBRAIN2 || \
+      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = nullptr;
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+        
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
+        _devices[0] = new NavioLED_I2C();
+        _devices[1] = new RCOutputRGBLed(HAL_RCOUT_RGBLED_RED, HAL_RCOUT_RGBLED_GREEN, HAL_RCOUT_RGBLED_BLUE);
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+
+    #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
+        _devices[0] = new DiscoLED();
+        _devices[1] = new ToneAlarm_Linux();
+        _devices[2] = nullptr;
+        _devices[3] = nullptr;
+        _devices[4] = nullptr;
+
+    #else
+        _devices[0] = new AP_BoardLED();
+        _devices[1] = new ToshibaLED_I2C();
+        _devices[2] = new ToneAlarm_PX4();
+        _devices[3] = new Display();
+        _devices[4] = nullptr;
+    #endif
+
 #else
-    _devices[3] = nullptr;                          // Disabled if minimized px4
+    _devices[0] = new AP_BoardLED();
+    _devices[1] = new ToshibaLED_I2C();
+    _devices[2] = nullptr;
+    _devices[4] = nullptr;
+    
 #endif
-#else
-    _devices[3] = nullptr;                          // Disabled if not px4 at all
-#endif
+
 
     // clear all flags and events
     memset(&AP_Notify::flags, 0, sizeof(AP_Notify::flags));
@@ -253,6 +242,7 @@ void AP_Notify::init(bool enable_external_leds)
         }
     }
 }
+
 
 // main update function, called at 50Hz
 void AP_Notify::update(void)
