@@ -179,7 +179,7 @@ void AP_Notify::init(bool enable_external_leds)
         _devices[4] = nullptr;
 
     #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_MINLURE
-        _devices[0] = new RCOutputRGBLedOff led(15, 13, 14, 255);
+        _devices[0] = new RCOutputRGBLedOff(15, 13, 14, 255);
         _devices[1] = nullptr;
         _devices[2] = nullptr;
         _devices[3] = nullptr;
